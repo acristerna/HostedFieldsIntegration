@@ -3,11 +3,11 @@ const express = require('express');
 const router = express.Router();
 const braintree = require("braintree");
 
-
 // to read search results
+const date = require('date-utils');
 const stream = require('stream');
 const readable = require('stream').Readable;
-const date = require('date-utils');
+
 
 // error handler 
 function formatErrors(errors) {
@@ -28,39 +28,37 @@ function formatErrors(errors) {
 //       console.log(deepErrors[i].attribute);
 //     }
 
-// get homepage and client token
+// get homepage and get client token 
 router.get('/', function (req, res, next) {
 	gateway.clientToken.generate({}, function (err, response) {
 		res.render('index', {
 			client_token: response.clientToken,
 			messages: req.flash('error')
 		})
-		//   console.log('client token: ' + response.clientToken);
 	});
 });
 
-
-// send transaction information to the results page
+// post transaction information to the results page including outside HF information
 router.post('/results-page', function (req, res, next) {
 	let paymentMethodNonce = req.body.nonce;
-	let amount = req.body.amount;
-	let firstName = req.body["first-name"]; // from form values
-	let lastName = req.body["last-name"]; // from form values
+	let firstName = req.body["first-name"]; // from form value
+	let lastName = req.body["last-name"]; // from form value
+	let amount = req.body.amount; // from form value
 
 	// create customer
-	gateway.customer.create({
+	gateway.customer.create({ // create customer with just name
 		firstName: firstName,
 		lastName: lastName
 	}, function (err, result) {
 		if (result !== undefined && result.success) {
-			gateway.paymentMethod.create({
+			gateway.paymentMethod.create({ // create payment method using nonce and resulted customer id
 				customerId: result.customer.id,
 				paymentMethodNonce: paymentMethodNonce,
 				options: {
 					verifyCard: true // card verification
 				}
 			}, function (err, result) {
-				if (result.success) {
+				if (result.success) { // if the payment method is created, use result for createTransaction method vv
 					createTransaction(result.paymentMethod);
 				} else if (result.success == false) {
 					const deepErrors = result.errors.deepErrors();
@@ -87,7 +85,7 @@ router.post('/results-page', function (req, res, next) {
 		}
 	})
 
-	// create transaction using a payment method
+	// create transaction using a payment method token 
 	function createTransaction(paymentMethod) {
 		gateway.transaction.sale({
 			amount: amount,

@@ -122,6 +122,7 @@
         console.error(clientErr);
         return;
       }
+      console.log('<%= client_token %>');
 
       braintree.hostedFields.create({
         client: clientInstance,
@@ -194,7 +195,7 @@
               return;
             }
             document.querySelector('#nonce').value = payload.nonce;
-            // console.log('nonce: ' + payload.nonce);
+            console.log('nonce: ' + payload.nonce);
             document.querySelector('#paymentType').value = payload.type;
             form.submit();
           });
