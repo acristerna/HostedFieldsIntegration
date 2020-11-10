@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Hosted Fields Integration</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700&family=Source+Code+Pro&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand bg-light navbar-light">
+    <a class="navbar-brand" href="/">Hosted Fields Integration</a>
+    <ui class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="search">Transaction Search</a>
+      </li>
+    </ui>
+  </nav>
+
+
+  <div class="checkout">
+
+    <!-- failed verification-->
+    <% if (messages && messages.length > 0) { -%>
+    <div class="alert alert-dark" role="alert">
+      Something went wrong with your card information, please try again! If issue persists, please call your bank.
+    </div>
+    <% } -%>
+
+    <div>
+      <div>
+        <h5 class="payment-type">Credit Card</h5>
+      </div>
+
+      <div class="form-group">
+        <form action="/results-page" id="checkout-form" method="post">
+          <div class="row mb-2">
+            <div class="col">
+              <label class="hosted-fields-label" for="first-name">First Name</label>
+              <input type="text" name="first-name" id="first-name" class="form-control hosted-field" placeholder="First"
+                required>
+            </div>
+            <div class="col">
+              <label class="hosted-fields-label" for="last-name">Last Name</label>
+              <input type="text" name="last-name" id="last-name" class="form-control hosted-field" placeholder="Last"
+                required>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col">
+              <label class="hosted-fields-label for=" card-number">Card Number</label>
+              <div id="card-number" class="form-control hosted-field"></div>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col">
+              <label class="hosted-fields-label for=" expiration-month-selector">Expiration Month</label>
+              <div id="expiration-month-selector" class="form-control hosted-field"></div>
+            </div>
+            <div class="col">
+              <label class="hosted-fields-label for=" expiration-year-selector">Expiration Year</label>
+              <div id="expiration-year-selector" class="form-control hosted-field"></div>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col">
+              <label class="hosted-fields-label for=" cvv">Security Code</label>
+              <div id="cvv" class="form-control hosted-field"></div>
+            </div>
+            <div class="col">
+              <label class="hosted-fields-label for=" postal-code">Postal Code</label>
+              <div id="postal-code" class="form-control hosted-field"></div>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col">
+              <label class="hosted-fields-label for=" amount">Amount</label>
+              <input type="text" name="amount" id="amount" class="form-control hosted-field" placeholder="100.00"
+                required>
+            </div>
+          </div>
+
+          <div>
+            <div class="button-container">
+              <input type="submit" value="Pay" class="btn btn-dark btn-lg btn-block" disabled />
+            </div>
+          </div>
+
+          <input type="hidden" name="nonce" id="nonce" />
+          <input type="hidden" name="paymentType" id="paymentType" />
+          <input type="hidden" id="integrationType" name="integrationType" value="hosted">
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://js.braintreegateway.com/web/3.56.0/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.56.0/js/hosted-fields.min.js"></script>
+  <script>
+    const form = document.querySelector('#checkout-form');
+    const submit = document.querySelector('input[type="submit"]');
+    braintree.client.create({
+      authorization: '<%= client_token %>'
+    }, function (clientErr, clientInstance) {
+      if (clientErr) {
+        console.error(clientErr);
+        return;
+      }
+
+      braintree.hostedFields.create({
+        client: clientInstance,
+        styles: {
+          'input': {
+            'font-size': '16px',
+            'font-family': 'Raleway, sans-serif',
+            'font-weight': 'lighter',
+            'color': '#ccc'
+          },
+          ':focus': {
+            'color': 'black'
+          },
+          '.valid': {
+            'color': '#FB406B'
+          }
+
+        },
+        fields: {
+          number: {
+            selector: '#card-number',
+            placeholder: '4111 1111 1111 1111'
+          },
+          cvv: {
+            selector: '#cvv',
+            placeholder: '•••',
+            maskInput: true
+          },
+          expirationMonth: {
+            selector: '#expiration-month-selector',
+            placeholder: '11',
+            select: {
+              options: [
+                '01 - January',
+                '02 - February',
+                '03 - March',
+                '04 - April',
+                '05 - May',
+                '06 - June',
+                '07 - July',
+                '08 - August',
+                '09 - September',
+                '10 - October',
+                '11 - November',
+                '12 - December'
+              ]
+            }
+          },
+          expirationYear: {
+            selector: '#expiration-year-selector',
+            placeholder: '2020',
+            select: true
+          },
+          postalCode: {
+            selector: '#postal-code',
+            placeholder: '60000'
+          }
+        }
+      }, function (hostedFieldsErr, hostedFieldsInstance) {
+        if (hostedFieldsErr) {
+          console.error(hostedFieldsErr);
+          return;
+        }
+        submit.removeAttribute('disabled');
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+            if (tokenizeErr) {
+              console.error(tokenizeErr);
+              return;
+            }
+            document.querySelector('#nonce').value = payload.nonce;
+            // console.log('nonce: ' + payload.nonce);
+            document.querySelector('#paymentType').value = payload.type;
+            form.submit();
+          });
+        }, false);
+      });
+    });
+  </script>
+
+</body>
+
+</html>

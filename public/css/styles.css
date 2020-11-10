@@ -1,0 +1,101 @@
+.navbar {
+    font-family: 'Source Code Pro', monospace;
+}
+
+.checkout {
+    width: 50%;
+    margin-left: 20px;
+}
+
+.payment-type {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    margin: 50px 10px 10px;
+
+}
+
+.hosted-fields-label {
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    display: block;
+    margin: 5px 20px;
+}
+
+.hosted-field {
+    color: #FB406B;
+    height: 50px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    display: inline-block;
+    box-shadow: none;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+    background: #fcfcfc;
+    margin: 0px 20px 5px;
+    background: linear-gradient(to right, white 50%, #fcfcfc 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: all 300ms ease-in-out;
+}
+
+.button-container {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+}
+
+.search-table {
+    font-family: 'Raleway', sans-serif;
+    border-collapse: collapse;
+    margin: 20px 0 0 50px;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0 0 0 0.2);
+}
+
+.search-table thead tr {
+    background-color: #FB406B;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+.search-table th,
+.search-table td {
+    padding: 12px 15px;
+}
+
+.search-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.search-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.search-table tbody tr:last-of-type {
+    border-bottom: 2px solid #FB406B;
+}
+
+.search-table tbody td a {
+    color: #FB406B;
+}
+
+.search-header {
+    color: #FB406B;
+    margin-left: 35px;
+    margin-top: 20px;
+}
+
+.search-footer {
+    color: #FB406B;
+    margin: 20px 0 20px 35px;
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Transaction Search</title>
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700&family=Source+Code+Pro&display=swap"
+		rel="stylesheet">
+
+	<!-- CSS Stylesheets -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+		integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand bg-light navbar-light">
+		<a class="navbar-brand" href="/">Hosted Fields Integration</a>
+		<ui class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a class="nav-link" href="search">Transaction Search</a>
+			</li>
+		</ui>
+	</nav>
+
+	<div>
+		<div class="container-fluid search-header">
+			<h3>Transactions From the Last 90 Days</h3>
+		</div>
+
+
+		<table class="search-table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Txn ID</th>
+					<th>Customer ID</th>
+					<th>Amount</th>
+					<th>Status</th>
+					<th>Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for (var i = 0; i < transactions.length; i++) { %>
+				<tr>
+					<th scope="row"><%= i + 1 %></th>
+					<td><a href="https://sandbox.braintreegateway.com/merchants/84ghq2kkh4bfvv27/transactions/<%= transactions[i].id %>"
+							target="_blank"><%= transactions[i].id %></a></td>
+					<td><a
+							href="https://sandbox.braintreegateway.com/merchants/84ghq2kkh4bfvv27/customers/<%= transactions[i].customer.id %>"><%= transactions[i].customer.id %></a>
+					</td>
+					<td><%= transactions[i].amount %></td>
+					<td><%= transactions[i].status %></td>
+					<td><%= transactions[i].createdAt %></td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+
+		<div>
+			<div class="container-fluid search-footer">
+				<h5>Total Transactions: <%= transactions.length %></h5>
+			</div>
+		</div>
+
+</body>
+
+</html>
