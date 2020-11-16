@@ -11,7 +11,7 @@
     font-family: 'Raleway', sans-serif;
     font-weight: 700;
     font-size: 30px;
-    margin: 50px 10px 10px;
+    margin: 30px 10px 10px;
 
 }
 
@@ -48,6 +48,11 @@
     margin-top: 20px;
     margin-left: 20px;
     width: 100%;
+}
+
+.verification {
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
 .search-table {
