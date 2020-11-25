@@ -64,7 +64,7 @@
 		<div>
 			<div class="container-fluid search-footer">
 				<h5>Total Transactions: <%= transactions.length %></h5>
-				<h5>Total Transaction Amount: $<%= txnTotal.toFixed(2)%></h5>
+				<h5>Total Transaction Amount: $<%= Math.round(txnTotal * 1e2)/1e2%></h5>
 			</div>
 		</div>
 
